@@ -1,0 +1,24 @@
+# Igor Holt — AI Architect
+
+> Creator of Genesis Conductor. Building AI systems that think in topologies.
+
+## Identity
+- Name: Igor Holt
+- Role: AI Architect
+- Company: Kovach Enterprises
+- Product: Genesis Conductor
+
+## Expertise
+- AI Architecture and multi-agent orchestration
+- Thermodynamic computing and S-ToT verification
+- A2A protocol and MCP server development
+- Cloudflare Workers and edge computing
+
+## Projects
+- [Genesis Conductor](https://genesisconductor.io): Topological reasoning engine
+- [Ambient Access Layer](https://optimization-inversion.genesisconductor.io): Persistent AI agents
+- [MCP Servers](https://github.com/igor-holt/mcp-servers): AI agent skills
+
+## Contact
+- Email: igor@kovachenterprises.com
+- GitHub: github.com/igor-holt
