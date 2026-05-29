@@ -1,0 +1,44 @@
+{
+  "$schema": "https://www.schemastore.org/schemas/json/claude-code-marketplace.json",
+  "name": "genesis-conductor-igor-holt-github-io",
+  "owner": {
+    "name": "Igor Holt (@invariantx)",
+    "email": "iholt@mymail.aacc.edu",
+    "url": "https://github.com/igor-holt"
+  },
+  "description": "Igor Holt personal GitHub Pages site (@invariantx) — AI Architect, Creator of Genesis Conductor. Central hub linking OpenClaw skills, MCP servers, agentic research (LID-LIFT, Grokepedia, thermodynamic frameworks), production deployments (Ambient Access Layer), typography systems (Barcelona-Extropic), and cryptographic primitives (Rule30 VDF). Serves as public index and brand surface for the full Genesis Conductor / OpenClaw / ClawHub ecosystem with cross-references to x.com/invariantx, genesisconductor.io, and all production projects.",
+  "version": "1.0.0",
+  "homepage": "https://github.com/igor-holt/igor-holt.github.io",
+  "keywords": [
+    "igor-holt-github-io",
+    "genesis-conductor",
+    "igor-holt",
+    "invariantx",
+    "ai-architect",
+    "openclaw-skills",
+    "mcp-servers",
+    "agentic-research",
+    "github-pages",
+    "claude-code-marketplace",
+    "personal-site",
+    "ecosystem-hub"
+  ],
+  "plugins": [
+    {
+      "name": "igor-holt-github-io",
+      "source": "https://github.com/igor-holt/igor-holt.github.io",
+      "description": "Official personal site and ecosystem directory for Igor Holt, Genesis Conductor creator. Aggregates links and context for all public projects including OpenClaw bundle, LID-LIFT suite, Grokepedia knowledge graph, and agent infrastructure components. Recommended starting point for discovering the full @invariantx production agentic stack.",
+      "version": "1.0.0",
+      "tags": ["portfolio", "ecosystem", "genesis-conductor", "documentation"],
+      "category": "documentation",
+      "homepage": "https://github.com/igor-holt/igor-holt.github.io",
+      "keywords": ["igor holt ai architect site", "genesis conductor ecosystem hub", "@invariantx github pages"]
+    }
+  ],
+  "links": {
+    "x": "https://x.com/invariantx",
+    "website": "https://genesisconductor.io",
+    "github": "https://github.com/igor-holt/igor-holt.github.io",
+    "live-site": "https://igor-holt.github.io"
+  }
+}
