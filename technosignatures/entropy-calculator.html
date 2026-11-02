@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Technosignature Information-Budget Calculator</title>
+<style>
+:root{--bg:#0b0e14;--panel:#12161f;--ink:#dbe2f0;--dim:#8b93a7;--acc:#7fd4ff;--warn:#ffb86b;--ok:#9df0b5}
+*{box-sizing:border-box}body{background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:0;padding:24px;max-width:1060px}
+h1{font-size:22px;margin:0 0 4px}h2{font-size:17px;color:var(--acc);margin:26px 0 8px;border-bottom:1px solid #232a3a;padding-bottom:6px}
+.sub{color:var(--dim);font-size:13.5px;margin-bottom:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.card{background:var(--panel);border:1px solid #232a3a;border-radius:10px;padding:14px 16px}
+.card h3{margin:0 0 10px;font-size:14px;color:var(--dim);text-transform:uppercase;letter-spacing:.06em}
+label{display:block;font-size:12.5px;color:var(--dim);margin:8px 0 2px}
+input,select{width:100%;background:#0e1219;border:1px solid #2b3348;color:var(--ink);border-radius:6px;padding:7px 9px;font-size:14px}
+button{background:#1d3f57;border:1px solid #2f6b8f;color:var(--ink);border-radius:8px;padding:9px 16px;font-size:14px;cursor:pointer;margin:6px 8px 0 0}
+button:hover{background:#27536f}
+.out{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13.5px}
+.out .row{display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-bottom:1px dotted #232a3a}
+.out .row:last-child{border-bottom:none}
+.out .k{color:var(--dim)}.out .v{color:var(--ink);text-align:right;white-space:nowrap}
+.anchor{color:var(--ok);font-size:12px}
+.warnbox{background:#1a1410;border:1px solid #4a3418;border-radius:10px;padding:12px 16px;margin-top:22px;font-size:13.5px;color:#e8d9c2}
+.warnbox b{color:var(--warn)}
+.note{font-size:12.5px;color:var(--dim);margin-top:6px}
+.formula{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;color:var(--dim);margin:8px 0}
+</style>
+</head>
+<body>
+<h1>Technosignature Information-Budget Calculator</h1>
+<div class="sub">Companion to the 2026-10-12 detection-channels document. Implements §1 budgets and the §3
+compact-object numbers, <b>with the review corrections applied</b>: Hawking row split into photon-only vs
+all-species, lifetime normalization qualified, PLATO set to March 2027 where referenced.</div>
+
+<div>
+<button onclick="preset('solar')">Solar anchors</button>
+<button onclick="preset('swarm')">300 K swarm</button>
+<button onclick="preset('onepct')">1% capture</button>
+<button onclick="preset('pbh')">10¹² kg PBH</button>
+</div>
+
+<h2>1 · Thermodynamic channel (entropy export)</h2>
+<div class="grid">
+<div class="card"><h3>Star + capture</h3>
+<label>Stellar luminosity L⋆ (W)</label><input id="L" type="text" value="3.828e26">
+<label>Stellar effective temperature T⋆ (K)</label><input id="Ts" type="text" value="5772">
+<label>Captured fraction α</label><input id="alpha" type="text" value="0.01">
+<label>Waste-heat radiator temperature Tw (K)</label><input id="Tw" type="text" value="300">
+<div class="formula">Ṡ = 4L/3T &nbsp;·&nbsp; Ξ = α(T⋆/Tw − 1)</div>
+</div>
+<div class="card"><h3>Entropy / erasure budget</h3><div class="out" id="o_thermo"></div></div>
+<div class="card"><h3>Radiator geometry</h3><div class="out" id="o_geom"></div>
+<div class="formula">R = √(L/4πσTw⁴) &nbsp;·&nbsp; λmax = 2898/Tw µm</div></div>
+</div>
+
+<h2>2 · Photon-statistical channel (coherence)</h2>
+<div class="grid">
+<div class="card"><h3>Emission parameters</h3>
+<label>Linewidth Δν (Hz)</label><input id="dnu" type="text" value="1">
+<label>Observed brightness temperature (K, optional)</label><input id="Tb" type="text" value="">
+<div class="formula">ℓc = c/Δν &nbsp;·&nbsp; thermal: s̄ = 3.60 kB, g⁽²⁾(0) = 2</div>
+</div>
+<div class="card"><h3>Coherence metrics</h3><div class="out" id="o_coh"></div></div>
+<div class="card"><h3>Reference gates</h3><div class="out">
+<div class="row"><span class="k">Natural maser limit</span><span class="v">ℓc ≲ 10⁶ m @ GHz</span></div>
+<div class="row"><span class="k">Sub-Hz line</span><span class="v">ℓc ≳ 3×10⁸ m</span></div>
+<div class="row"><span class="k">Inverse-Compton limit</span><span class="v">~10¹² K (coherence, not artifice)</span></div>
+<div class="row"><span class="k">Coherent light</span><span class="v">s̄ ≪ kB, g⁽²⁾(0) = 1</span></div>
+</div></div>
+</div>
+
+<h2>3 · Observability ceiling (shot-noise floor)</h2>
+<div class="grid">
+<div class="card"><h3>Photometry</h3>
+<label>Fractional rms modulation ε</label><input id="eps" type="text" value="1e-4">
+<label>Collected photon rate Φ (s⁻¹)</label><input id="Phi" type="text" value="1e10">
+<div class="formula">C ≈ ε²Φ / 2ln2 bit/s</div>
+</div>
+<div class="card"><h3>Recoverable information</h3><div class="out" id="o_obs"></div></div>
+<div class="card"><h3>Notes</h3><div class="note">Φ ≈ 10¹⁰ s⁻¹ ≈ Sun-like star at 10 pc in a
+JWST-class aperture. For bright solar-type targets, granulation and p-modes stay above the
+shot-noise floor until ~10 mHz — search above that. Granulation is the ceiling below it, not a design signature.</div></div>
+</div>
+
+<h2>4 · Compact-object channel (Hawking)</h2>
+<div class="grid">
+<div class="card"><h3>Black hole</h3>
+<label>Mass (kg)</label><input id="M" type="text" value="1e12">
+<label>Distance (pc)</label><input id="dpc" type="text" value="10">
+<label>All-species / photon-only power ratio</label><input id="spec" type="text" value="28">
+<div class="note">Ratio ≈ 28 is document-derived at kT ≈ 10 MeV. The lifetime normalization
+(5×10¹⁴ g → 13.8 Gyr) holds for <b>all-species</b> emission only; photon-only, the same hole lives 3.3×10¹¹ yr.</div>
+</div>
+<div class="card"><h3>Hawking budgets</h3><div class="out" id="o_hawk"></div></div>
+<div class="card"><h3>Detectability</h3><div class="out" id="o_det"></div></div>
+</div>
+
+<div class="warnbox">
+<b>Built-in review corrections (2026-10-12).</b> (1) The document's "~10¹⁰ W Hawking γ-rays" row is the
+<b>all-species total</b>; photon-only luminosity is 3.56×10⁸ W for a 10¹² kg hole, so the γ-ray flux at
+10 pc is ~3×10⁻²⁵ erg cm⁻² s⁻¹, not ~10⁻²⁴. Verdict unchanged: 12+ orders below Fermi-LAT sensitivity,
+undetectable. (2) Lifetime normalization assumes full Standard Model emission. (3) PLATO target is
+<b>March 2027</b> (Ariane 6), not "beginning of 2027". Constants: kB, ħ, c, G, σ, Wien b = 2897.77 µm·K (CODATA).
+</div>
+
+<script>
+"use strict";
+const kB=1.380649e-23, LN2=Math.log(2), KBLN2=kB*LN2;
+const HBAR=1.054571817e-34, CL=299792458, G=6.67430e-11, SIGMA=5.670374419e-8;
+const AU=1.495978707e11, PC=3.085677581e16, YR=365.25*86400, MSUN=1.98892e30;
+const $=id=>document.getElementById(id);
+const num=id=>parseFloat($(id).value);
+function sci(x,d=3){if(!isFinite(x))return "—";if(x===0)return "0";
+  const e=Math.floor(Math.log10(Math.abs(x)));const m=x/Math.pow(10,e);
+  return m.toFixed(d)+"×10"+sup(e);}
+function sup(e){return String(e).split("").map(c=>c==="-"?"⁻":"⁰¹²³⁴⁵⁶⁷⁸⁹"[+c]).join("");}
+function row(k,v){return `<div class="row"><span class="k">${k}</span><span class="v">${v}</span></div>`;}
+
+function calc(){
+  const L=num("L"),Ts=num("Ts"),a=num("alpha"),Tw=num("Tw");
+  const dnu=num("dnu"),eps=num("eps"),Phi=num("Phi");
+  const M=num("M"),dpc=num("dpc"),sf=num("spec"),Tb=parseFloat($("Tb").value);
+
+  const Sphot=4/3*L/Ts, Sw=4/3*L/Tw;
+  const Xi=a*(Ts/Tw-1);
+  const Nbit=4*a*L/(3*KBLN2)*(1/Tw-1/Ts);
+  const Sobs=Sphot*(1+Xi);
+  $("o_thermo").innerHTML=
+    row("Ṡ photosphere (W/K)",sci(Sphot))+
+    row("Ṡ observed (W/K)",sci(Sobs))+
+    row("Ξ = Ṡobs/Ṡphot − 1",Xi.toExponential(3))+
+    row("Erasure ceiling (bit/s)",sci(Nbit))+
+    row("Entropy/photon, thermal",sci(3.60*kB)+" J/K = 3.60 kB")+
+    row("Bits per thermal photon","≈ 5.19");
+
+  const R=Math.sqrt(L/(4*Math.PI*SIGMA*Math.pow(Tw,4)));
+  $("o_geom").innerHTML=
+    row("Radiator radius",sci(R)+" m")+
+    row("Radiator radius", (R/AU).toFixed(3)+" AU")+
+    row("Wien peak λmax",(2897.77/Tw).toFixed(2)+" µm");
+
+  let coh=row("Coherence length ℓc = c/Δν",sci(CL/dnu)+" m");
+  coh+=row("Entropy per photon (thermal)","3.60 kB · 5.19 bits");
+  coh+=row("g⁽²⁾(0): thermal / coherent","2 / 1");
+  if(isFinite(Tb)&&Tb>0)coh+=row("Brightness temp vs 10¹² K limit",(Tb>=1e12?"<span class='anchor'>exceeds — coherent</span>":"below — consistent w/ thermal"));
+  $("o_coh").innerHTML=coh;
+
+  const C=eps*eps*Phi/(2*LN2);
+  $("o_obs").innerHTML=row("C ≈ ε²Φ/2ln2",sci(C)+" bit/s")+
+    row("Solar-anchor check (ε=10⁻⁴, Φ=10¹⁰)","≈ 72 bit/s");
+
+  const Pph=HBAR*Math.pow(CL,6)/(15360*Math.PI*G*G*M*M);
+  const Pall=Pph*sf;
+  const tauPh=5120*Math.PI*G*G*Math.pow(M,3)/(HBAR*Math.pow(CL,4));
+  const d=dpc*PC, flux=Pph/(4*Math.PI*d*d)*1e3; // erg/cm2/s
+  const kT_MeV=HBAR*CL**3/(8*Math.PI*G*M*1.602176634e-13); // MeV
+  $("o_hawk").innerHTML=
+    row("Photon-only power",sci(Pph)+" W")+
+    row("All-species power (×"+sf+")",sci(Pall)+" W")+
+    row("Hawking temp kT",kT_MeV.toExponential(2)+" MeV")+
+    row("Lifetime, photon-only",sci(tauPh/YR)+" yr")+
+    row("Lifetime, all-species",sci(tauPh/sf/YR)+" yr");
+  const lat=1e-12; // approx Fermi-LAT 10-yr point-source sensitivity >1 GeV
+  $("o_det").innerHTML=
+    row("γ flux @ "+dpc+" pc (photon-only)",sci(flux)+" erg cm⁻² s⁻¹")+
+    row("Orders below Fermi-LAT",(Math.log10(lat/flux)).toFixed(1))+
+    row("Verdict",Math.log10(lat/flux)>6?"<span class='anchor'>undetectable</span>":"check");
+}
+function preset(p){
+  if(p==="solar"){$("L").value="3.828e26";$("Ts").value="5772";$("alpha").value="1";$("Tw").value="5772";}
+  if(p==="swarm"){$("L").value="3.828e26";$("Ts").value="5772";$("alpha").value="1";$("Tw").value="300";}
+  if(p==="onepct"){$("L").value="3.828e26";$("Ts").value="5772";$("alpha").value="0.01";$("Tw").value="300";}
+  if(p==="pbh"){$("M").value="1e12";$("dpc").value="10";$("spec").value="28";}
+  calc();
+}
+document.querySelectorAll("input").forEach(i=>i.addEventListener("input",calc));
+calc();
+</script>
+</body>
+</html>
